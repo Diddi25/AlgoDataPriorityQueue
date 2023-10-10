@@ -5,6 +5,4 @@ public class Cell<T extends Comparable<T>> {
         this.item = item;
         this.nextCell = nextCell;
     }
-
-
 }
