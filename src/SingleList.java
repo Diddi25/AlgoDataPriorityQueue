@@ -1,25 +1,25 @@
 public class SingleList<T extends Comparable<T>> {
     Cell<T> firstInFirstImplementation;
+    Cell<T> lastInFirstImplementation;
     Cell<T> firstInSecondImplementation;
-
     public void addInConstantTime(T item) {
         if (this.firstInFirstImplementation == null) {
             firstInFirstImplementation = new Cell<>(item, null);
+            lastInFirstImplementation = firstInFirstImplementation;
         } else {
-            // går inte utan att springa igenom + sortering, dessutom måste ha lastpekare
+            lastInFirstImplementation.nextCell = new Cell<>(item, null);
+            lastInFirstImplementation = lastInFirstImplementation.nextCell;
         }
     }
     public Cell<T> removeNTime() {
         Cell<T> temporary = this.firstInFirstImplementation;
+        Cell<T> smallestItem = null;
         while(temporary != null) {
-            if (temporary.nextCell.nextCell != null) {
-                Cell<T> saveBeforeReturn = temporary.nextCell;
-                temporary.nextCell = null;
-                return saveBeforeReturn;
+            if(temporary.item.compareTo(temporary.nextCell.item) < 0) {
+                smallestItem = temporary;
             }
-            temporary = temporary.nextCell;
         }
-        return null;
+        return smallestItem;
     }
     
     public void addNTime(T item) {
