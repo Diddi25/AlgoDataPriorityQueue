@@ -11,7 +11,18 @@ public class Heap<T extends Comparable<T>> {
         if (this.root == null) {
             return null;
         } else {
-            return this.root.removeInNodeClass();
+            Node<T> saveBeforeReturning = this.root;
+            this.root = this.root.restructureHeap();
+            return saveBeforeReturning;
+        }
+    }
+
+    public void push(T numberOfPushes) {
+        if(this.root == null) {
+            return;
+        } else {
+            this.root.item = numberOfPushes;
+            this.root.pushDown(numberOfPushes);
         }
     }
 

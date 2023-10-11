@@ -4,13 +4,14 @@ public class Node<T extends Comparable<T>> implements Comparable <T> {
     Node<T> right;
     Node<T> left;
     boolean leftOrRightDecision = true;
+    boolean rootIsNotChanged = true;
     public Node(T item, Integer numberOfNodes) {
         this.item = item;
         this.numberOfNodes = numberOfNodes;
         this.left = this.right = null;
     }
     public void addInNodeClass(T newItem) {
-        if (this.item.equals(item)) {
+        if (this.item.equals(newItem)) {
             return;
         }
         if (leftOrRightDecision) {
@@ -35,24 +36,56 @@ public class Node<T extends Comparable<T>> implements Comparable <T> {
             }
         }
     }
-    public Node<T> removeInNodeClass() {
-        Node<T> saveBeforeReturning = this;
+    public Node<T> restructureHeap() {
+        Node<T> saveBeforeReturningNewRoot = null;
+        if (rootIsNotChanged) {
+            saveBeforeReturningNewRoot = this;
+            rootIsNotChanged = false;
+        }
         if (leftOrRightDecision) {
             if (this.left.right == null) {
-                this.left = this.right;
+                this.left.right = this.right;
                 changeDirectionDecision();
             } else {
-                this.left.removeInNodeClass();
+                this.numberOfNodes--;
+                this.left.restructureHeap();
             }
         } else {
             if (this.right.left == null) {
-                this.right = this.left;
+                this.right.left = this.left;
                 changeDirectionDecision();
             } else {
-                this.right.removeInNodeClass();
+                this.numberOfNodes--;
+                this.right.restructureHeap();
             }
         }
-        return saveBeforeReturning;
+        return saveBeforeReturningNewRoot;
+    }
+    public void pushDown(T newItem) {
+        if (this.item.equals(newItem)) {
+            return;
+        }
+        if (leftOrRightDecision) {
+            if (this.left == null) {
+                this.left = new Node<>(newItem, this.numberOfNodes++);
+                changeDirectionDecision();
+            } else if (this.left.item.compareTo(item) > 0) {
+                T newItemToAdd = swapItems(newItem);
+                this.left.addInNodeClass(newItemToAdd);
+            } else {
+                this.left.addInNodeClass(newItem);
+            }
+        } else {
+            if (this.right == null) {
+                this.right = new Node<>(newItem, this.numberOfNodes++);
+                changeDirectionDecision();
+            } else if (this.right.item.compareTo(item) > 0) {
+                T newItemToAdd = swapItems(newItem);
+                this.right.addInNodeClass(newItemToAdd);
+            } else {
+                this.right.addInNodeClass(newItem);
+            }
+        }
     }
     private T swapItems(T newItem) {
         T savedItem = this.item;
