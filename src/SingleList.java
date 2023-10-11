@@ -2,6 +2,7 @@ public class SingleList<T extends Comparable<T>> {
     Cell<T> firstInFirstImplementation;
     Cell<T> lastInFirstImplementation;
     Cell<T> firstInSecondImplementation;
+    Cell<T> smallestInSecondImplementation;
     public void addInConstantTime(T item) {
         if (this.firstInFirstImplementation == null) {
             firstInFirstImplementation = new Cell<>(item, null);
@@ -15,9 +16,10 @@ public class SingleList<T extends Comparable<T>> {
         Cell<T> temporary = this.firstInFirstImplementation;
         Cell<T> smallestItem = null;
         while(temporary != null) {
-            if(temporary.item.compareTo(temporary.nextCell.item) < 0) {
+            if (temporary.item.compareTo(temporary.nextCell.item) < 0) {
                 smallestItem = temporary;
             }
+            temporary = temporary.nextCell;
         }
         return smallestItem;
     }
@@ -28,6 +30,9 @@ public class SingleList<T extends Comparable<T>> {
         } else {
             Cell<T> temporary = this.firstInSecondImplementation;
             while (temporary.nextCell != null) {
+                if (temporary.item.compareTo(item) < 0) {
+                    this.smallestInSecondImplementation = temporary;
+                }
                 temporary = temporary.nextCell;
             }
             temporary.nextCell = new Cell<>(item,null); //fortfarande inte sorterad

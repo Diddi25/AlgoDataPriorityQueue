@@ -7,11 +7,11 @@ public class Heap<T extends Comparable<T>> {
             this.root.addInNodeClass(item);
         }
     }
-    public void remove() {
+    public Node<T> remove() {
         if (this.root == null) {
-            return;
+            return null;
         } else {
-            this.root.addInNodeClass(item);
+            return this.root.removeInNodeClass();
         }
     }
 

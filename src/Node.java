@@ -35,13 +35,32 @@ public class Node<T extends Comparable<T>> implements Comparable <T> {
             }
         }
     }
+    public Node<T> removeInNodeClass() {
+        Node<T> saveBeforeReturning = this;
+        if (leftOrRightDecision) {
+            if (this.left.right == null) {
+                this.left = this.right;
+                changeDirectionDecision();
+            } else {
+                this.left.removeInNodeClass();
+            }
+        } else {
+            if (this.right.left == null) {
+                this.right = this.left;
+                changeDirectionDecision();
+            } else {
+                this.right.removeInNodeClass();
+            }
+        }
+        return saveBeforeReturning;
+    }
     private T swapItems(T newItem) {
         T savedItem = this.item;
         this.item = newItem;
         return savedItem;
     }
     private void changeDirectionDecision() {
-        leftOrRightDecision = !leftOrRightDecision;
+        this.leftOrRightDecision = !leftOrRightDecision;
     }
     @Override
     public int compareTo(T item) {
