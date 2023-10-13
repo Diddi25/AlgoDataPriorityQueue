@@ -24,7 +24,7 @@ public class SingleList<T extends Comparable<T>> {
         return smallestItem;
     }
     
-    public void addNTime(T item) {
+    public void addNTime(T item) { // måste sorteras på något sätt
         if (this.firstInSecondImplementation == null) {
             this.firstInSecondImplementation = new Cell<>(item, null);
         } else {

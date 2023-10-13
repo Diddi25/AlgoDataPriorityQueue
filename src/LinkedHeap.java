@@ -1,4 +1,4 @@
-public class Heap<T extends Comparable<T>> {
+public class LinkedHeap<T extends Comparable<T>> {
     Node<T> root;
     public void add(T item) {
         if (this.root == null) {
@@ -12,7 +12,7 @@ public class Heap<T extends Comparable<T>> {
             return null;
         } else {
             Node<T> saveBeforeReturning = this.root;
-            this.root = this.root.restructureHeap();
+            this.root = this.root.returnNewRootAndRestructureHeap();
             return saveBeforeReturning;
         }
     }

@@ -36,10 +36,14 @@ public class Node<T extends Comparable<T>> implements Comparable <T> {
             }
         }
     }
-    public Node<T> restructureHeap() {
+    public Node<T> returnNewRootAndRestructureHeap() {
         Node<T> saveBeforeReturningNewRoot = null;
         if (rootIsNotChanged) {
-            saveBeforeReturningNewRoot = this;
+            if (leftOrRightDecision) {
+                saveBeforeReturningNewRoot = this.left;
+            } else {
+                saveBeforeReturningNewRoot = this.right;
+            }
             rootIsNotChanged = false;
         }
         if (leftOrRightDecision) {
@@ -47,8 +51,8 @@ public class Node<T extends Comparable<T>> implements Comparable <T> {
                 this.left.right = this.right;
                 changeDirectionDecision();
             } else {
-                this.numberOfNodes--;
-                this.left.restructureHeap();
+                this.numberOfNodes--; //kommer alltid finnas en prioritets element
+                this.left.returnNewRootAndRestructureHeap();
             }
         } else {
             if (this.right.left == null) {
@@ -56,7 +60,7 @@ public class Node<T extends Comparable<T>> implements Comparable <T> {
                 changeDirectionDecision();
             } else {
                 this.numberOfNodes--;
-                this.right.restructureHeap();
+                this.right.returnNewRootAndRestructureHeap();
             }
         }
         return saveBeforeReturningNewRoot;
