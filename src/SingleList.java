@@ -2,7 +2,6 @@ public class SingleList<T extends Comparable<T>> {
     Cell<T> firstInFirstImplementation;
     Cell<T> lastInFirstImplementation;
     Cell<T> firstInSecondImplementation;
-    Cell<T> smallestInSecondImplementation;
     public void addInConstantTime(T item) {
         if (this.firstInFirstImplementation == null) {
             firstInFirstImplementation = new Cell<>(item, null);
@@ -14,7 +13,7 @@ public class SingleList<T extends Comparable<T>> {
     }
     public Cell<T> removeNTime() {
         Cell<T> temporary = this.firstInFirstImplementation;
-        Cell<T> smallestItem = null;
+        Cell<T> smallestItem = temporary;
         while(temporary != null) {
             if (temporary.item.compareTo(temporary.nextCell.item) < 0) {
                 smallestItem = temporary;
@@ -24,18 +23,16 @@ public class SingleList<T extends Comparable<T>> {
         return smallestItem;
     }
     
-    public void addNTime(T item) { // måste sorteras på något sätt
+    public void addNTime(T item) {
         if (this.firstInSecondImplementation == null) {
             this.firstInSecondImplementation = new Cell<>(item, null);
         } else {
             Cell<T> temporary = this.firstInSecondImplementation;
-            while (temporary.nextCell != null) {
-                if (temporary.item.compareTo(item) < 0) {
-                    this.smallestInSecondImplementation = temporary;
-                }
+            while (temporary.nextCell != null && (temporary.item.compareTo(item) < 0)) {
                 temporary = temporary.nextCell;
             }
-            temporary.nextCell = new Cell<>(item,null); //fortfarande inte sorterad
+            Cell<T> sparedNode = temporary.nextCell;
+            temporary.nextCell = new Cell<>(item, sparedNode);
         }
     }
     public Cell<T> removeInConstantTime() {
